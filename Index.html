@@ -1,42 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Content Quality</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SSC Mini Mock Test</title>
 
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f5f5f5;
-            text-align: center;
-        }
+<style>
+body {
+font-family: Arial;
+background: #f5f5f5;
+text-align: center;
+}
 
-        header {
-            background: #111;
-            color: white;
-            padding: 20px;
-            font-size: 24px;
-        }
+#quiz-box {
+background: white;
+padding: 20px;
+margin: 20px;
+border-radius: 10px;
+}
 
-        .card {
-            background: white;
-            margin: 20px;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-    </style>
+button {
+padding: 10px 20px;
+margin-top: 10px;
+}
+</style>
 </head>
 
 <body>
 
-<header>The Content Quality</header>
+<h2>SSC CGL Mini Test (5 Questions)</h2>
+<h3 id="timer">Time: 2:00</h3>
 
-<div class="card">Analysis</div>
-<div class="card">Sectional Timing Strategy</div>
-<div class="card">English + Maths Smart Notes</div>
+<div id="quiz-box">
+<p id="question"></p>
+<div id="options"></div>
+<button onclick="nextQ()">Next</button>
+</div>
+
+<script>
+let questions = [
+{q:"2 + 2 = ?", options:["3","4","5","6"], ans:"4"},
+{q:"5 × 3 = ?", options:["15","10","20","25"], ans:"15"},
+{q:"Capital of India?", options:["Delhi","Mumbai","Kolkata","Chennai"], ans:"Delhi"},
+{q:"10 ÷ 2 = ?", options:["2","3","5","8"], ans:"5"},
+{q:"7 + 8 = ?", options:["14","15","16","17"], ans:"15"}
+];
+
+let index=0;
+let score=0;
+let time=120;
+
+function loadQ(){
+let q=questions[index];
+document.getElementById("question").innerText=q.q;
+let opt="";
+q.options.forEach(o=>{
+opt+=`<div><input type='radio' name='opt' value='${o}'> ${o}</div>`;
+});
+document.getElementById("options").innerHTML=opt;
+}
+
+function nextQ(){
+let selected=document.querySelector("input[name='opt']:checked");
+if(selected && selected.value==questions[index].ans){
+score++;
+}
+index++;
+if(index<questions.length){
+loadQ();
+}else{
+document.body.innerHTML="<h2>Test Finished</h2><h3>Score: "+score+"/5</h3>";
+}
+}
+
+function timer(){
+let min=Math.floor(time/60);
+let sec=time%60;
+document.getElementById("timer").innerText=`Time: ${min}:${sec<10?"0"+sec:sec}`;
+time--;
+if(time<0){
+document.body.innerHTML="<h2>Time Up</h2><h3>Score: "+score+"/5</h3>";
+}
+}
+
+setInterval(timer,1000);
+loadQ();
+</script>
 
 </body>
 </html>
